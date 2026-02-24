@@ -16,12 +16,12 @@ async function Register(req,res){
         })
     }
 
-    
+    const hashPass = await bycrypt.hash(password,10)
 
     const User  = await userModel.create({
         username,
         email,
-        password,
+        password : hashPass ,
         role
     })
    
@@ -52,7 +52,7 @@ async function Login(req,res){
         })
     }
 
-    const Ispassword = await bycrypt.compare(IsUser.password,password)
+    const Ispassword = await bycrypt.compare(password,IsUser.password)
 
     if(!Ispassword){
         return res.status(401).json({
