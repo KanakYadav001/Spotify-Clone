@@ -54,6 +54,42 @@ async function CreateMusic(req,res){
 }
 
 
+async function CreateAlbum(req,res){
+   const token  = req.cookies.token
+
+    if(!token){
+        return res.status(401).json({
+            message : "Please Login Or Register First"
+        })
+    }
+  
+    let decoaded ;
+
+    try{
+
+         decoaded = jwt.verify(token,process.env.JWT_SECRET)
+ 
+        if(decoaded.role !== "artist"){
+            return res.status(401).json({
+                message : "Only Artist Made Songs"
+            })
+        }
+     
+        
+
+    }catch(err){
+       return res.status(401).json({
+            message : "Invalid Token !"
+        })
+    }
+    
 
 
-module.exports=CreateMusic
+    res.status(201).json({
+        message : "Album Create Sucessfully"
+    })
+}
+
+
+
+module.exports={CreateMusic, CreateAlbum}
