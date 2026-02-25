@@ -1,6 +1,7 @@
 const musicModel = require('../models/music.model')
 const jwt = require('jsonwebtoken')
-
+const UploadFile = require('../services/storage.services')
+const MusicModel = require('../models/music.model')
 
 async function CreateMusic(req,res){
     const token  = req.cookie.token
@@ -29,6 +30,26 @@ async function CreateMusic(req,res){
             message : "Invalid Token !"
         })
     }
+
+
+    const {title} = req.body
+    const file  = req.file
+
+
+    const result = await UploadFile(file,title)
+
+
+    const MusicCreate = await MusicModel.create({
+       url: result.url,
+        title, 
+        artist : decoaded.id
+    })
+
+
+    res.status(201).json({
+        message : "Music Create Sucessfully",
+        MusicCreate
+    })
 }
 
 
