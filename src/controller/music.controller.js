@@ -2,7 +2,6 @@ const musicModel = require('../models/music.model')
 const jwt = require('jsonwebtoken')
 const UploadFile = require('../services/storage.services')
 const MusicModel = require('../models/music.model')
-const MusicAlbum = require('../models/album.model')
 const AlbumModel = require('../models/album.model')
 
 
@@ -64,4 +63,26 @@ async function GetAllSongs(req,res){
 }
 
 
-module.exports={CreateMusic, CreateAlbum , GetAllSongs}
+async function GetAllAlbum(req,res){
+    const album  = await AlbumModel.find().select('title artist')
+
+    return res.status(200).json({
+        message : "All Album Fetch",
+        album
+    })
+}
+
+
+
+async function GetAlbumId(req,res){
+    const AlbumId  = req.params.albumId
+
+    const Album = await AlbumModel.findById(AlbumId).populate("artist",'username email')
+
+    res.status(200).json({
+        message : "Album Songs Fetch Sucessfullt",
+        Album
+    })
+}
+
+module.exports={CreateMusic, CreateAlbum , GetAllSongs , GetAllAlbum, GetAlbumId}
