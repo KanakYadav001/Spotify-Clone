@@ -3,7 +3,7 @@ const MusicController  = require('../controller/music.controller')
 const multer = require('multer')
 const router  = express.Router()
 
-const upload = multer({storage  : multer.memoryStorage})
+const upload = multer({storage  : multer.memoryStorage()})
 
 router.post('/',upload.single('music'),MusicController)
 

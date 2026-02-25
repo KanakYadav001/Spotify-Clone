@@ -4,19 +4,20 @@ const UploadFile = require('../services/storage.services')
 const MusicModel = require('../models/music.model')
 
 async function CreateMusic(req,res){
-    const token  = req.cookie.token
+    const token  = req.cookies.token
 
     if(!token){
         return res.status(401).json({
             message : "Please Login Or Register First"
         })
     }
-
+  
+    let decoaded ;
 
     try{
 
-        const decoaded = jwt.verify(token,process.env.JWT_SECRET)
-
+         decoaded = jwt.verify(token,process.env.JWT_SECRET)
+ 
         if(decoaded.role !== "artist"){
             return res.status(401).json({
                 message : "Only Artist Made Songs"
@@ -26,7 +27,7 @@ async function CreateMusic(req,res){
         
 
     }catch(err){
-        res.status(401).json({
+       return res.status(401).json({
             message : "Invalid Token !"
         })
     }
