@@ -31,7 +31,7 @@ async function Register(req,res){
         role
     })
    
-    const token = jwt.sign({id:User._id},process.env.JWT_SECRET)
+    const token = jwt.sign({id:User._id,role:User.role},process.env.JWT_SECRET)
 
     res.cookie('token',token)
 
@@ -65,7 +65,7 @@ async function Login(req,res){
             message : "Password Invalid"
         })
     }
-    const token = jwt.sign({id:IsUser._id},process.env.JWT_SECRET)
+    const token = jwt.sign({id:IsUser._id,role:IsUser.role},process.env.JWT_SECRET)
 
     res.cookie('token',token)
 
