@@ -53,5 +53,15 @@ const Artistid  = req.user
 }
 
 
+async function GetAllSongs(req,res){
+    const songs =  await MusicModel.find()
 
-module.exports={CreateMusic, CreateAlbum}
+
+    res.status(201).json({
+        message : "Songs Fetch Sucessfully",
+        songs
+    })
+}
+
+
+module.exports={CreateMusic, CreateAlbum , GetAllSongs}
