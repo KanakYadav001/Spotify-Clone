@@ -11,7 +11,7 @@ app.use(express.json())
 
 
 app.use('/api',AuthRouter)
-app.use('/api/music',musicRoute)
+app.use('/api',musicRoute)
 
 
 

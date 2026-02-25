@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken')
 async function Register(req,res){
 
     const {username,email,password,role} = req.body
-   
+    
 
     const IsUser  = await userModel.findOne({
         $or:[

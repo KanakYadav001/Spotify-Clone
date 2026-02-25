@@ -2,40 +2,20 @@ const musicModel = require('../models/music.model')
 const jwt = require('jsonwebtoken')
 const UploadFile = require('../services/storage.services')
 const MusicModel = require('../models/music.model')
+const MusicAlbum = require('../models/album.model')
+const AlbumModel = require('../models/album.model')
+
+
+
+
 
 async function CreateMusic(req,res){
-    const token  = req.cookies.token
-
-    if(!token){
-        return res.status(401).json({
-            message : "Please Login Or Register First"
-        })
-    }
-  
-    let decoaded ;
-
-    try{
-
-         decoaded = jwt.verify(token,process.env.JWT_SECRET)
- 
-        if(decoaded.role !== "artist"){
-            return res.status(401).json({
-                message : "Only Artist Made Songs"
-            })
-        }
-     
-        
-
-    }catch(err){
-       return res.status(401).json({
-            message : "Invalid Token !"
-        })
-    }
+    
 
 
     const {title} = req.body
     const file  = req.file
-
+  const Artistid  = req.user
 
     const result = await UploadFile(file,title)
 
@@ -43,7 +23,7 @@ async function CreateMusic(req,res){
     const MusicCreate = await MusicModel.create({
        url: result.url,
         title, 
-        artist : decoaded.id
+        artist : Artistid
     })
 
 
@@ -55,38 +35,20 @@ async function CreateMusic(req,res){
 
 
 async function CreateAlbum(req,res){
-   const token  = req.cookies.token
+   
+    const {title,songs} = req.body
+const Artistid  = req.user
+    const album = await AlbumModel.create({
+        title,
+        songs,
+        artist :Artistid
+    })
 
-    if(!token){
-        return res.status(401).json({
-            message : "Please Login Or Register First"
-        })
-    }
-  
-    let decoaded ;
-
-    try{
-
-         decoaded = jwt.verify(token,process.env.JWT_SECRET)
- 
-        if(decoaded.role !== "artist"){
-            return res.status(401).json({
-                message : "Only Artist Made Songs"
-            })
-        }
-     
-        
-
-    }catch(err){
-       return res.status(401).json({
-            message : "Invalid Token !"
-        })
-    }
-    
 
 
     res.status(201).json({
-        message : "Album Create Sucessfully"
+        message : "Album Create Sucessfully",
+        album
     })
 }
 

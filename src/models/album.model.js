@@ -5,7 +5,7 @@ const AlbumScema = new mongoo.Schema({
     type: String,
     required : true
   },
-  music: [
+  songs: [
     {
       type: mongoo.Schema.Types.ObjectId,
       ref: "musics",

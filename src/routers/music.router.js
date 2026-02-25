@@ -1,11 +1,13 @@
 const express = require('express')
-const MusicController  = require('../controller/music.controller')
+const {CreateMusic, CreateAlbum} = require('../controller/music.controller')
 const multer = require('multer')
+const ArtistAuthController = require('../middleware/auth.middleware')
 const router  = express.Router()
 
 const upload = multer({storage  : multer.memoryStorage()})
 
-router.post('/',upload.single('music'),MusicController)
+router.post('/music',upload.single('music'),ArtistAuthController,CreateMusic)
+router.post('/album',ArtistAuthController,CreateAlbum)
 
 
 
