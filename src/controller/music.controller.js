@@ -53,7 +53,7 @@ const Artistid  = req.user
 
 
 async function GetAllSongs(req,res){
-    const songs =  await MusicModel.find()
+    const songs =  await MusicModel.find().limit(10)
 
 
     res.status(201).json({
